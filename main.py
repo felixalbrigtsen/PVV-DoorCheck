@@ -14,7 +14,7 @@ import time
 import RPi.GPIO as GPIO
 
 SERVER_ADDR = "https://hookb.in/W1NkmpggqKCYplzzpBay"
-SWITCH_PIN = 26 #GPIO2 when using BCM numbering
+SWITCH_PIN = 26 #GPIO26 when using BCM numbering
 WAIT_TIMEOUT = 60000 #Miliseconds
 
 #Debug, replace with gpio read
@@ -54,7 +54,7 @@ def main():
         sendState(doorState)
 
 
-#Call main if file is directly invoked
+#Call main if file is directly invoked, not imported
 if __name__ == '__main__':
     main()
 
