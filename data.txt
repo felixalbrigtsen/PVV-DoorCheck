@@ -1,0 +1,8 @@
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
+{"isDoorOpen": true, "time": 1629662106.2648914, "humantime": "Sun Aug 22 21:55:06 2021"}
