@@ -14,12 +14,14 @@ import time
 import RPi.GPIO as GPIO
 
 SERVER_ADDR = "https://hookb.in/W1NkmpggqKCYplzzpBay"
-SWITCH_PIN = "GPIO2"
+SWITCH_PIN = 26 #GPIO2 when using BCM numbering
+WAIT_TIMEOUT = 60000 #Miliseconds
 
 #Debug, replace with gpio read
 def getDoorState():
-    #GpIO.input might return 0, False or GPIO.LOW if the pin is low, convert to bool
-    return True if GPIO.input(SWITCH_PIN) else False
+    doorState = bool(GPIO.input(SWITCH_PIN))
+    return doorState
+
 
 def sendState(doorState):
     epochtime = time.time()
@@ -30,25 +32,33 @@ def sendState(doorState):
         "humantime": timestamp
     }
 
+    print("Sending doorState: " + str(payload) + "\n")
+
     response = requests.post(SERVER_ADDR, json=payload)
     print(response.text)
 
 
 def main():
     GPIO.setmode(GPIO.BCM) #Set numbering scheme for other GPIO functions
-    GPIO.setup(SWITCH_PIN, GPIO.IN) #Set our pin to input/read-mode
+    GPIO.setup(SWITCH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP) #Set our pin to input/read-mode
+
+    #Send on startup
+    sendState(getDoorState())
 
     #Wait for pin change, POST to server, repeat
     while True:
-        GPIO.wait_for_edge(SWITCH_PIN, GPIO.BOTH) #Blocking wait, halts the program until the value changes
+        #NOTICE: the following statement will block everything, including keyboard interrupts from the shell
+        GPIO.wait_for_edge(SWITCH_PIN, GPIO.BOTH, timeout=WAIT_TIMEOUT) #Blocking wait, halts the program until the value changes, or timeout is reached
 
         doorState = getDoorState()
         sendState(doorState)
 
 
-    
-
-
 #Call main if file is directly invoked
 if __name__ == '__main__':
     main()
+
+###TODO
+# -Hook into website
+# -Autostart on boot
+# -Check security
