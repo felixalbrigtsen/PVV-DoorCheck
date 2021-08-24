@@ -3,20 +3,11 @@
     $prevDoorState = true;
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $jsonobj = file_get_contents('php://input');
-        // $data = json_decode($jsonobj);
-        // session_start(); # start session handling.
-        // $_SESSION["doorState"] = $data->isDoorOpen;
-        // echo $_SESSION["doorState"]; # VIRKER IKKE OM SESSION-VAR IKKE ER SATT
 
-        //TODO - Only store last week, delete old
         $historyFile = fopen($LOGFILE, "a") or die("Unable to open file!");
         fwrite($historyFile, $jsonobj);
         fwrite($historyFile, "\n");
         fclose($historyFile);
-
-        $prevStateFile = fopen($LOGFILE, "w") or die("Unable to open file!");
-        fwrite($prevStateFile, $jsonobj);
-        fclose($prevDoorState);
 
         echo "ok";
     
@@ -41,21 +32,16 @@
             fseek($f, $cursor, SEEK_END);
             $char = fgetc($f);
 
-            /**
-             * Trim trailing newline chars of the file
-             */
+            
+            //Trim trailing newline chars of the file
             while ($char === "\n" || $char === "\r") {
                 fseek($f, --$cursor, SEEK_END);
                 $char = fgetc($f);
             }
 
-            /**
-             * Read until the start of file or first newline char
-             */
+            //Read until the start of file or first newline char 
             while ($char !== false && $char !== "\n" && $char !== "\r") {
-                /**
-                 * Prepend the new char
-                 */
+                //Prepend the new char
                 $line = $char . $line;
                 fseek($f, --$cursor, SEEK_END);
                 $char = fgetc($f);
