@@ -13,7 +13,7 @@ import requests
 import time
 # import RPi.GPIO as GPIO
 
-SERVER_ADDR = "http://localhost:8080/door1.php"
+SERVER_ADDR = "http://localhost:8080/setDoorState.php"
 SWITCH_PIN = 26 #GPIO26 when using BCM numbering
 WAIT_TIMEOUT = 60000 #Miliseconds
 
