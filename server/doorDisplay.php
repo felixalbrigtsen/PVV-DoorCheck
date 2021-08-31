@@ -13,6 +13,7 @@
 <style>
 /* DOOR SENSOR */
 #doorIndicator {
+    display: inline;
     border-radius: 5px;
     box-shadow: -10px 10px 10px lightgray;
     padding: 8px 8px;
