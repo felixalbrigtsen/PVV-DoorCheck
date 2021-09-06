@@ -1,21 +1,21 @@
-#2nd attempt door sensor server script
-#Reversed server-client roles of web server and door server.
-#This pi checks for door events and pushes updates to the web server
-
-#Example request sent by this script:
+#Client for PVV door sensor. Made for raspberry pi.
+#Example POST-request sent by this script:
 # {
 #   "isDoorOpen": true,
-#   "time": 1629538651.9597645,
-#   "humantime": "Sat Aug 21 11:37:31 2021"
+#   "time": 1629538651
 # }
 
 import requests
 import time
+import math
 import RPi.GPIO as GPIO
 
-SERVER_ADDR = "https://hookb.in/W1NkmpggqKCYplzzpBay"
+SERVER_ADDR = "https://www.pvv.ntnu.no/door/"
 SWITCH_PIN = 26 #GPIO26 when using BCM numbering
-WAIT_TIMEOUT = 60000 #Miliseconds
+WAIT_TIMEOUT = 10 * 60 * 1000 #Miliseconds
+SECRET = "BEARER TOKEN SECRET GOES HERE"
+
+headers = {'Authorization': f'Bearer {SECRET}'}
 
 #Debug, replace with gpio read
 def getDoorState():
@@ -24,17 +24,15 @@ def getDoorState():
 
 
 def sendState(doorState):
-    epochtime = time.time()
-    timestamp = time.ctime()
+    epochtime = math.floor(time.time())
     payload = {
         "isDoorOpen": doorState,
         "time": epochtime,
-        "humantime": timestamp
     }
 
     print("Sending doorState: " + str(payload) + "\n")
 
-    response = requests.post(SERVER_ADDR, json=payload)
+    response = requests.post(SERVER_ADDR, json=payload, headers=headers)
     print(response.text)
 
 
@@ -57,8 +55,3 @@ def main():
 #Call main if file is directly invoked, not imported
 if __name__ == '__main__':
     main()
-
-###TODO
-# -Hook into website
-# -Autostart on boot
-# -Check security
